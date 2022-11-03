@@ -1,0 +1,17 @@
+.titulo {
+  color: blue;
+  text-align: center;
+}
+
+.img {
+  display: block;
+  width: 500px;
+  height: 500px;
+  margin: 0 auto;
+}
+
+/* Entenda como acontece a conexão do React com arquivos css */
+/* Linha 7: transforma a imagem em um block
+   Linha 10: vai centralizar a imagem
+   
+*/
