@@ -1,13 +1,19 @@
-.titulo {
-  color: blue;
-  text-align: center;
+.caixa {
+  background-color: #3f51b5;
 }
 
-.img {
-  display: block;
-  width: 500px;
-  height: 500px;
-  margin: 0 auto;
+.titulo {
+  color: white !important;
+  font-weight: bold;
+}
+
+.botao {
+  color: white !important;
+  border-color: white !important;
+  background-color: #3f51b5;
+}
+.postagens {
+  background-color: white;
 }
 
 /* Entenda como acontece a conexão do React com arquivos css */
