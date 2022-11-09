@@ -30,7 +30,7 @@ function CadastroUsuario() {
 
   useEffect(() => {
     //direciona o usuario para a tela de login apos o cadastro
-    if (userResult.id !== 0) {
+    if (userResult.id != 0) {
       //verifica se o ID é diferente de 0 se for = não está utilizando os valores padrão e direciona a tela de login
       navigate('/login');
     }
