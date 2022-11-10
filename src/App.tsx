@@ -7,6 +7,10 @@ import Login from './paginas/login/Login';
 import CadastroUsuario from './paginas/cadastroUsuario/CadastroUsuario';
 import ListaTema from './components/temas/listaTema/ListaTema';
 import ListaPostagem from './components/postagens/listaPostagem/ListaPostagem';
+import CadastroPostagem from './components/postagens/cadastroPostagem/CadastroPostagem';
+import CadastroTema from './components/temas/cadastroTema/CadastroTema';
+import DeletarPostagem from './components/postagens/deletarPostagem/DeletarPostagem';
+import DeletarTema from './components/temas/deletarTema/DeletarTema';
 import './App.css';
 
 function App() {
@@ -21,6 +25,23 @@ function App() {
           <Route path="/cadastrousuario" element={<CadastroUsuario />} />
           <Route path="/temas" element={<ListaTema />} />
           <Route path="/postagens" element={<ListaPostagem />} />
+          <Route path="/cadastrarPostagem" element={<CadastroPostagem />} />
+          {/* quando usuario acessar a rota, isso indica que ele ira cadastrar uma nova Postagem */}
+
+          <Route path="/cadastrarPostagem/:id" element={<CadastroPostagem />} />
+          {/* quando usuario acessar a rota, isso indica que ele ira editar uma Postagem através do ID da postagem*/}
+
+          <Route path="/cadastrarTema" element={<CadastroTema />} />
+          {/* quando usuario acessar a rota, isso indica que ele ira cadastrar um novo Tema*/}
+
+          <Route path="/cadastrarTema/:id" element={<CadastroTema />} />
+          {/* quando usuario acessar a rota, isso indica que ele ira editar um tema atráves do ID do tema já criado */}
+
+          <Route path="/deletarPostagem/:id" element={<DeletarPostagem />} />
+          {/* quando usuario acessar a rota, isso indica que ele ira deletar uma postagem atráves do ID da postagem que ele quer deletar */}
+
+          <Route path="/deletarTema/:id" element={<DeletarTema />} />
+          {/* quando usuario acessar a rota, isso indica que ele ira deletar um tema atráves do ID do tema que ele quer deletar */}
         </Routes>
       </div>
 
