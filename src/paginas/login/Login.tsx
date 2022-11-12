@@ -2,15 +2,20 @@ import React, { useState, ChangeEvent, useEffect } from 'react'; //acrescimo do 
 import { Grid, Typography, TextField, Button } from '@material-ui/core';
 import { Box } from '@mui/material';
 import { Link, useNavigate } from 'react-router-dom';
-import useLocalStorage from 'react-use-localstorage';
 import { login } from '../../services/Service';
 import UserLogin from '../../models/UserLogin'; //importanto o UserLogin
 import './Login.css';
+import { useDispatch } from 'react-redux';
+import { addToken } from '../../store/tokens/Actions';
+import { toast } from 'react-toastify';
 
 function Login() {
   let navigate = useNavigate(); //hook useNavigate
 
-  const [token, setToken] = useLocalStorage('token'); //vai fazer o controle do token dentro do local storage - setToken  é uma função
+  //const dispatch vai receber o hook useDispatch
+  const dispatch = useDispatch();
+
+  const [token, setToken] = useState('');
 
   const [userLogin, setUserLogin] = useState<UserLogin>({
     //useState do parametro UserLogin
@@ -22,6 +27,16 @@ function Login() {
     foto: '',
     usuario: '',
     senha: '',
+    token: '',
+  });
+
+  const [respUserLogin, setRespUserLogin] = useState<UserLogin>({
+    //FALTA TERMINAR
+    id: 0,
+    nome: '',
+    usuario: '',
+    senha: '',
+    foto: '',
     token: '',
   });
 
@@ -44,6 +59,7 @@ function Login() {
   //arrow function, vai ser construido a logica para o redirecionamento
   useEffect(() => {
     if (token != '') {
+      dispatch(addToken(token)); //função dispatch que irá passar o addtoken que irá passar como parametro o token
       //verifica se o token está vazio
       navigate('/home'); //redirecionamento para a pagina home
     }
@@ -57,10 +73,28 @@ function Login() {
     try {
       //try= tentativa de execução
       await login(`/usuarios/logar`, userLogin, setToken); //passar o dados de tentativa de execução, se der certo vai armazenar os dados e vai guardar o token no local storage
-      alert('Usuário logado com sucesso!');
+      toast.success('Usuário logado com sucesso!', {
+        position: 'top-right',
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        theme: 'colored',
+        progress: undefined,
+      });
     } catch (error) {
       // cat = é onde é relatado o erro
-      alert('Dados de usuário incorretos!'); //
+      toast.error('Dados de usuário incorretos!', {
+        position: 'top-right',
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        theme: 'colored',
+        progress: undefined,
+      }); //
     }
   }
 

@@ -10,18 +10,34 @@ import { Box } from '@mui/material';
 import './DeletarPostagem.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import Postagem from '../../../models/Postagem';
-import useLocalStorage from 'react-use-localstorage';
+import { toast } from 'react-toastify';
+
 import { buscaId, deleteId } from '../../../services/Service';
+import { useSelector } from 'react-redux';
+import { TokenState } from '../../../store/tokens/tokensReducer';
 
 function DeletarPostagem() {
   let navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
-  const [token, setToken] = useLocalStorage('token');
+
+  const token = useSelector<TokenState, TokenState['tokens']>(
+    state => state.tokens
+  );
+
   const [post, setPosts] = useState<Postagem>();
 
   useEffect(() => {
     if (token == '') {
-      alert('Você precisa estar logado');
+      toast.error('Você precisa estar logado', {
+        position: 'top-right',
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        theme: 'colored',
+        progress: undefined,
+      });
       navigate('/login');
     }
   }, [token]);
@@ -50,7 +66,16 @@ function DeletarPostagem() {
         Authorization: token,
       },
     });
-    alert('Postagem deletada com sucesso'); //mensagem de sucesso
+    toast.success('Postagem deletada com sucesso', {
+      position: 'top-right',
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: false,
+      draggable: false,
+      theme: 'colored',
+      progress: undefined,
+    }); //mensagem de sucesso
   }
 
   function nao() {

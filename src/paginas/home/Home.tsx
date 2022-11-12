@@ -5,16 +5,31 @@ import { Box } from '@mui/material';
 import ModalPostagem from '../../components/postagens/modalPostagem/ModalPostagem';
 import './Home.css';
 import { useNavigate } from 'react-router-dom';
-import useLocalStorage from 'react-use-localstorage';
+import { useSelector } from 'react-redux';
+import { TokenState } from '../../store/tokens/tokensReducer';
+import { toast } from 'react-toastify';
 
 function Home() {
   let navigate = useNavigate();
 
-  const [token, setToken] = useLocalStorage('token');
+  //useSelector vai acessar o useNavigate, vai pegar o token e atribuir a constante token
+  const token = useSelector<TokenState, TokenState['tokens']>(
+    state => state.tokens
+  );
 
+  //e é a cosntante token que vai ser verificado no hook abaixo
   useEffect(() => {
     if (token == '') {
-      alert('Você precisa estar logado');
+      toast.error('Você precisa estar logado', {
+        position: 'top-right', //posição da notificação (em cima à direita)
+        autoClose: 2000, //em que momento essa notificação deve sumir, em 2000 milisegundos
+        hideProgressBar: false, //Precisa ou não ocultar a barra de progresso, neste caso false
+        closeOnClick: true, //fechar a notificação por um click no X
+        pauseOnHover: false, //se colocar o mouse por cima será pausada? -neste caso falso
+        draggable: false, //mover a notificação do lugar
+        theme: 'colored', //tema da notificação - colorido
+        progress: undefined,
+      });
       navigate('/login');
     }
   }, [token]);

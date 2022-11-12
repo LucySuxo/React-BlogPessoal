@@ -12,21 +12,36 @@ import {
 } from '@material-ui/core';
 import './CadastroPostagem.css';
 import { useNavigate, useParams } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import Tema from '../../../models/Tema';
-import useLocalStorage from 'react-use-localstorage';
 import { busca, buscaId, post, put } from '../../../services/Service';
 import Postagem from '../../../models/Postagem';
+import { useSelector } from 'react-redux';
+import { TokenState } from '../../../store/tokens/tokensReducer';
 
 function CadastroPostagem() {
   let navigate = useNavigate();
   const { id } = useParams<{ id: string }>(); //para cadastrar ou atualizar um post
   const [temas, setTemas] = useState<Tema[]>([]); //vai ser do tipo array > vai trabalhar com a listagem de temas que estão cadastrador
-  const [token, setToken] = useLocalStorage('token'); //token armazenado no local storage
+
+  //local que o token armazenado
+  const token = useSelector<TokenState, TokenState['tokens']>(
+    state => state.tokens
+  );
 
   useEffect(() => {
     //verificação do token, o usuario precisa estar logado para fazer as modificações
     if (token == '') {
-      alert('Você precisa estar logado'); //vai redirecionar o usuario
+      toast.error('Você precisa estar logado', {
+        position: 'top-right',
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: false,
+        theme: 'colored',
+        progress: undefined,
+      });
       navigate('/login');
     }
   }, [token]);
@@ -91,7 +106,7 @@ function CadastroPostagem() {
   }
 
   async function onSubmit(e: ChangeEvent<HTMLFormElement>) {
-    //para envio das informações que o usuario preencher as informações
+    //para envio das informações que o usuario preencher para o back-end
     e.preventDefault();
 
     if (id !== undefined) {
@@ -102,7 +117,16 @@ function CadastroPostagem() {
           Authorization: token,
         },
       });
-      alert('Postagem atualizada com sucesso');
+      toast.success('Postagem atualizada com sucesso', {
+        position: 'top-right', //posição da notificação (em cima à direita)
+        autoClose: 2000, //em que momento essa notificação deve sumir, em 2000 milisegundos
+        hideProgressBar: false, //Precisa ou não ocultar a barra de progresso, neste caso false
+        closeOnClick: true, //fechar a notificação por um click no X
+        pauseOnHover: false, //se colocar o mouse por cima será pausada? -neste caso falso
+        draggable: false, //mover a notificação do lugar
+        theme: 'colored', //tema da notificação - colorido
+        progress: undefined, //progresso indefinido
+      });
     } else {
       //caso contrario, ira criar uma nova postagem
       post(`/postagens`, postagem, setPostagem, {
@@ -111,7 +135,16 @@ function CadastroPostagem() {
           Authorization: token,
         },
       });
-      alert('Postagem cadastrada com sucesso');
+      toast.success('Postagem cadastrada com sucesso', {
+        position: 'top-right', //posição da notificação (em cima à direita)
+        autoClose: 2000, //em que momento essa notificação deve sumir, em 2000 milisegundos
+        hideProgressBar: false, //Precisa ou não ocultar a barra de progresso, neste caso false
+        closeOnClick: true, //fechar a notificação por um click no X
+        pauseOnHover: false, //se colocar o mouse por cima será pausada? -neste caso falso
+        draggable: false, //mover a notificação do lugar
+        theme: 'colored', //tema da notificação - colorido
+        progress: undefined, //progresso indefinido
+      });
     }
     back(); //chamada dentro da função onSubmit
   }
@@ -151,9 +184,11 @@ function CadastroPostagem() {
           variant="outlined"
           margin="normal"
           fullWidth
+          multiline //cresce conforme escreve
+          minRows={4} //aumenta a caixa para 4 linhas
         />
 
-        <FormControl>
+        <FormControl fullWidth>
           <InputLabel id="demo-simple-select-helper-label">Tema </InputLabel>
           <Select
             labelId="demo-simple-select-helper-label"
